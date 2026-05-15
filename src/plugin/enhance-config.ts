@@ -116,6 +116,20 @@ export async function enhanceConfig(
             }
           }
 
+          const ctxIdx = model.status?.args?.indexOf('--ctx-size')
+          if (ctxIdx !== -1 && ctxIdx + 1 < model.status.args.length) {
+            modelConfig.limit = {
+              context: parseInt(model.status.args[ctxIdx + 1], 10)
+            }
+          }
+          const predIdx = model.status?.args?.indexOf('--n-predict')
+          if (predIdx !== -1 && predIdx + 1 < model.status.args.length) {
+            modelConfig.limit = {
+              ...modelConfig.limit,
+              output: parseInt(model.status.args[predIdx + 1], 10)
+            }
+          }
+
           discoveredModels[modelKey] = modelConfig
         }
       }
